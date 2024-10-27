@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
+    <div style="background-color: #282c34;" class="font-lexend absolute flex inset-0 h-full w-full">
+	<div class="max-w-80 m-auto py-12">
+		<div class="mx-auto space-y-6">
+			<div class="">
+				<h1 class="text-gray-50 text-center">
+					Confirmer votre email
+				</h1>
+				<p class="text-sm font-light leading-none text-center text-gray-400">
+					Entrez le code à 4 chiffres que nous avons envoyé à <a class="text-[#fc6736]" href="mailto:mail@mail.com">mail@mail.com</a>
+				</p>
+			</div>
+			<form action="" class="flex mx-auto justify-center items-center gap-2" autocomplete="off" id="validate">
+				<input type="text" name="digit-1" id="" class="inline-flex items-center justify-center bg-transparent border rounded-md border-gray-50/20 w-12 h-12 text-sm font-light text-center focus:outline-none focus:border-[#fc6736] text-gray-50">
+				<input type="text" name="" id="" class="inline-flex items-center justify-center bg-transparent border rounded-md border-gray-50/20 w-12 h-12 text-sm font-light text-center focus:outline-none focus:border-[#fc6736] text-gray-50">
+				<input type="text" name="" id="" class="inline-flex items-center justify-center bg-transparent border rounded-md border-gray-50/20 w-12 h-12 text-sm font-light text-center focus:outline-none focus:border-[#fc6736] text-gray-50">
+				<input type="text" name="" id="" class="inline-flex items-center justify-center bg-transparent border rounded-md border-gray-50/20 w-12 h-12 text-sm font-light text-center focus:outline-none focus:border-[#fc6736] text-gray-50">
+			</form>
+
+			<div class="text-center">
+				<p class="text-sm font-light leading-none text-center text-gray-400">
+					Le code est encore valide pour: 
+					<span class="text-[#fc6736]">
+						<span id="hour">00</span>
+						<span>:</span>
+						<span id="minutes">00</span>
+						<span>:</span>
+						<span id="seconds">00</span>
+					</span>
+				</p>
+				<a class="text-gray-50" target="_blank" href="https://tailflows.com">Tailflows.com</a>
+			</div>
+		</div>
+	</div>
+	<script>
+		const makeCountDown = (endTime) => {
+			let interval = undefined;
+			const hours = document.getElementById('hour')
+			const minutes = document.getElementById('minutes')
+			const seconds = document.getElementById('seconds')
+
+			const update = () => {
+				const now = new Date()
+				const timeLeft = endTime - now.getTime()
+
+				if (timeLeft <= 0)
+				{
+					clearInterval(interval)
+					hours.textContent = '00'
+					minutes.textContent = '00'
+					seconds.textContent = '00'
+					return 
+				}
+
+				const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60))
+          		const minutesLeft = Math.floor(
+            		(timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+          		)
+          		const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000)
+
+				hours.textContent = hoursLeft > 9 ? hoursLeft : '0' + hoursLeft
+				minutes.textContent = minutesLeft > 9 ? minutesLeft : '0' + minutesLeft
+				seconds.textContent = secondsLeft > 9 ? secondsLeft : '0' + secondsLeft
+			}
+
+			const clean = () => {
+				if (interval) clearInterval(interval)
+				window.removeEventListener('beforeunload', clean)
+			}
+
+			interval = setInterval(update, 1000)
+			window.addEventListener('beforeunload', clean)
+
+			update()
+		}
+	
+		class Validation {
+			constructor (formId) {
+				this.form = document.getElementById(formId)
+				this.fields = Array.from(document.querySelectorAll(`#${formId} > input[type="text"]`))
+
+				this.handleField = this.handleField.bind(this)
+			}
+
+			init (){
+				this.fields.forEach(this.handleField)
+				const endTime = new Date().getTime() + 300000
+				makeCountDown(endTime)
+			}
+
+			handleField(field, index){
+				field.addEventListener('keydown', (event) => {
+					const { keyCode } = event
+
+					if (keyCode === 8)
+					{
+						return true
+					}
+
+					if (keyCode >= 48 && keyCode <= 67) return true
+
+					if ((ctrlkey || metakey) && keyCode === 67) return true
+
+					if ((ctrlkey || metakey) && keyCode === 86) return true
+
+					event.preventDefault()
+					return false
+				})
+			
+				field.addEventListener('input', (event) => {
+					const { value } = field
+
+					if (value.length === 1 && index !== this.fields.length) this.fields[index + 1].focus()
+
+					else if (value.length === 0 && index !== 0)
+					this.fields[index - 1].focus()
+				})
+			}
+		}
+	
+		const validate = new Validation('validate')
+
+		window.onload = validate.init.bind(validate)
+	</script>
+</div>
+</body>
+</html>
