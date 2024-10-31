@@ -12,3 +12,4 @@ def handle_patient_page(request):
 
 def handle_index_page(request):
     return render(request, 'Formulaires_connection/index.html')
+

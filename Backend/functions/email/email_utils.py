@@ -9,7 +9,26 @@ from django.conf import settings
 from django.core.cache import cache
 import random
 import datetime
-def send_confirmation_email(user_email, username, user_id):
+def send_confirmation_email(user_email, username, user_id, confirmation_code):
+    subject = "Confirmation de votre inscription"
+    message = ""
+    html_message = f"""
+    <p>Bonjour <strong>{username}</strong>,</p>
+    <p>Merci pour votre inscription. Utilisez le code ci-dessous pour confirmer votre adresse e-mail :</p>
+    <p><strong style="color: blue;">Code de confirmation : {confirmation_code}</strong></p>
+    <p>Ce code est valide pendant 5 minutes.</p>
+    <p>Merci !</p>
+    """
+    
+    # Envoie de l'e-mail avec le code de confirmation
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [user_email],
+        fail_silently=False,
+        html_message=html_message
+    )
     # Génère un code de confirmation à 4 chiffres
     confirmation_code = random.randint(1000, 9999)
     # Définit le délai d'expiration pour le code
@@ -29,24 +48,16 @@ def send_confirmation_email(user_email, username, user_id):
     <p>Merci !</p>
     """
     
-    # Envoie de l'e-mail
-    send_mail(
-        subject,
-        message,
-        'from@example.com',  # Remplace 'from@example.com' par ton adresse d'expéditeur
-        [user_email],
-        fail_silently=False,
-        html_message=html_message
-    )
+    
 # La fonction handle_confirm_page a été modifiée pour ne pas rendre de template
 def handle_confirm_page(request, user_id):
     if request.method == "POST":
-        code_saisi = request.POST.get("code")
+        code_saisi = request.POST.get("confirmation_code", "")
+        
         stored_code = cache.get(f'confirmation_code_{user_id}')
         expiration_time = cache.get(f'confirmation_expiration_{user_id}')
         
         if stored_code and expiration_time:
-            # Vérifie si le code est valide et n'est pas expiré
             if str(stored_code) == code_saisi and datetime.datetime.now() < expiration_time:
                 cache.delete(f'confirmation_code_{user_id}')
                 cache.delete(f'confirmation_expiration_{user_id}')

@@ -27,4 +27,4 @@ def handle_confirm_email(request, uid, token):
         return render(request, 'med_platform/invalid_link.html')  # Page d'erreur en cas de lien invalide
 
 def handle_create_profile(request):
-    return render(request, 'med_platform/create_profile.html')
+    return render(request, 'create.Profile/create_profile.html')

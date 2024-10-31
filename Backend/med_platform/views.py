@@ -5,14 +5,22 @@ from .forms import UserRegistrationForm
 from functions.auth.auth_utils import handle_signup, handle_confirm_email, handle_create_profile
 from functions.email.email_utils import send_confirmation_email, handle_confirm_page
 from functions.views.view_utils import handle_admin_page, handle_doctor_page, handle_patient_page, handle_index_page
-
+from django.contrib import messages
+import random
 def signup_page(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = handle_signup(request, form)
-            send_confirmation_email(user.email, user.username, user.id)  # Appel avec les bons arguments
-            return redirect('mail_confirm')  # Redirige vers la page de confirmation par code
+            
+            # Génère un code de confirmation unique
+            confirmation_code = random.randint(1000, 9999)
+            
+            # Envoie le code dans l'email
+            send_confirmation_email(user.email, user.username, user.id, confirmation_code)
+            
+            # Passe le code dans le contexte pour le rendre accessible en JavaScript
+            return render(request, 'Mail/mail_confirm.html', {'confirmation_code': confirmation_code})
     else:
         form = UserRegistrationForm()
     return render(request, 'Formulaires_connection/signup.html', {'form': form})
@@ -36,11 +44,20 @@ def patient_page(request):
 def index_page(request):
     return handle_index_page(request)
 
+@login_required
 def mail_confirm_page(request):
     user_id = request.user.id
-    result = handle_confirm_page(request, user_id)  # Appel de handle_confirm_page pour valider le code
 
-    if result['success']:
-        return render(request, 'Mail/mail_confirm.html', {'success': True})
-    else:
-        return render(request, 'Mail/mail_confirm.html', {'error_message': result['message']})
+    if request.method == 'POST':
+        # Récupère le code saisi dans le champ unique
+        code = request.POST.get("confirmation_code", "")
+        
+        # Appel de la fonction de confirmation de code
+        result = handle_confirm_page(request, user_id)
+        
+        if result['success']:
+            return redirect('create_profile')  # Redirige vers la page de création de profil
+        else:
+            messages.error(request, result['message'])  # Affiche un message d'erreur si le code est incorrect
+
+    return render(request, 'Mail/mail_confirm.html')
