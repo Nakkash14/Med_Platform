@@ -11,4 +11,5 @@ urlpatterns = [
     path('doctor/', views.doctor_page, name='doctor_page'),
     path('patient/', views.patient_page, name='patient_page'),
     path('mail-confirm/', views.mail_confirm_page, name='mail_confirm'),  # Route pour la confirmation par code
+    path('succes/',views.succes_page, name='succes_page'),
 ]

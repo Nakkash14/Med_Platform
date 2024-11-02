@@ -44,6 +44,9 @@ def patient_page(request):
 def index_page(request):
     return handle_index_page(request)
 
+def succes_page(request) :
+    return  render(request, 'create.Profile/succes.html')
+
 @login_required
 def mail_confirm_page(request):
     user_id = request.user.id

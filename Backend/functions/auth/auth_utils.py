@@ -1,4 +1,5 @@
 # functions/auth/auth_utils.py
+import requests
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -26,5 +27,23 @@ def handle_confirm_email(request, uid, token):
     else:
         return render(request, 'med_platform/invalid_link.html')  # Page d'erreur en cas de lien invalide
 
+from med_platform.forms import UserProfileForm  # Assurez-vous que UserProfileForm est bien importé
+
+
+from med_platform.forms import UserProfileForm
+
 def handle_create_profile(request):
-    return render(request, 'create.Profile/create_profile.html')
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        
+        # Vérification pour s'assurer que le champ licence est rempli si l'utilisateur est docteur
+        if request.POST.get('occupation') == 'docteur' and not request.FILES.get('licence'):
+            form.add_error('licence', "La licence est obligatoire pour les docteurs.")
+        
+        if form.is_valid():
+            form.save()
+            return redirect('succes_page')  
+    else:
+        form = UserProfileForm()
+
+    return render(request, 'create.Profile/create_profile.html', {'form': form})
