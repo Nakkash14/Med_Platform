@@ -7,6 +7,7 @@ from functions.email.email_utils import send_confirmation_email, handle_confirm_
 from functions.views.view_utils import handle_admin_page, handle_doctor_page, handle_patient_page, handle_index_page
 from django.contrib import messages
 import random
+from .models import UserProfile 
 def signup_page(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -64,3 +65,20 @@ def mail_confirm_page(request):
             messages.error(request, result['message'])  # Affiche un message d'erreur si le code est incorrect
 
     return render(request, 'Mail/mail_confirm.html')
+
+@login_required
+def redirect_after_login(request):
+    try:
+        # Récupère le profil de l'utilisateur connecté
+        user_profile = UserProfile.objects.get(user=request.user)
+
+        # Redirection basée sur l'occupation de l'utilisateur
+        if user_profile.occupation == 'docteur':
+            return redirect('doctor_page')
+        elif user_profile.occupation == 'patient':
+            return redirect('patient_page')
+        else:
+            return redirect('index_page')  # Option de redirection par défaut si occupation inconnue
+    except UserProfile.DoesNotExist:
+        # Si le profil n'existe pas, redirige vers la page d'accueil
+        return redirect('index_page')
