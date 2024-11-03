@@ -1,5 +1,5 @@
 # med_platform/urls.py
-from django.urls import path
+from django.urls import path 
 from . import views
 
 urlpatterns = [
@@ -12,5 +12,7 @@ urlpatterns = [
     path('patient/', views.patient_page, name='patient_page'),
     path('mail-confirm/', views.mail_confirm_page, name='mail_confirm'),  # Route pour la confirmation par code
     path('succes/',views.succes_page, name='succes_page'),
-     path('redirect_after_login/', views.redirect_after_login, name='redirect_after_login'),
+    path('redirect_after_login/', views.redirect_after_login, name='redirect_after_login'),
+    
+  
 ]

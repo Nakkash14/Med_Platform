@@ -1,6 +1,6 @@
 # med_platform/views.py
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
 from .forms import UserRegistrationForm
 from functions.auth.auth_utils import handle_signup, handle_confirm_email, handle_create_profile
 from functions.email.email_utils import send_confirmation_email, handle_confirm_page
@@ -8,6 +8,8 @@ from functions.views.view_utils import handle_admin_page, handle_doctor_page, ha
 from django.contrib import messages
 import random
 from .models import UserProfile 
+from . import views
+
 def signup_page(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -29,7 +31,7 @@ def signup_page(request):
 def confirm_email(request, uid, token):
     return handle_confirm_email(request, uid, token)
 
-@login_required
+
 def create_profile(request):
     return handle_create_profile(request)
 
@@ -82,3 +84,4 @@ def redirect_after_login(request):
     except UserProfile.DoesNotExist:
         # Si le profil n'existe pas, redirige vers la page d'accueil
         return redirect('index_page')
+    

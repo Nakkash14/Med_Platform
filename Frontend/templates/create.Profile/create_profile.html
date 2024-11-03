@@ -61,7 +61,7 @@
         <div class="formbold-form-wrapper">
             <img src="{% static 'ProfileForm/image/hero-doc.png' %}" width="550" height="350" alt="Image du profil">
             
-            <form method="POST" enctype="multipart/form-data" onsubmit="showAnimation(event)">
+            <form method="POST" enctype="multipart/form-data" onsubmit="showAnimation(event)"action="{% url 'succes_page' %}">
                 {% csrf_token %}
                 
                 <!-- Affiche les erreurs globales du formulaire, si elles existent -->

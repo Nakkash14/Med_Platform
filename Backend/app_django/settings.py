@@ -10,8 +10,11 @@ EMAIL_HOST_PASSWORD = 'm g d c b a s y f d c o l q f t'  # Mot de passe de votre
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+  # Ou utilisez 'login' si c'est le nom de votre vue de connexion
 
 LOGIN_REDIRECT_URL = 'redirect_after_login'
+# settings.py
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
