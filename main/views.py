@@ -124,3 +124,7 @@ def patient_dashboard(request):
 @login_required
 def docteur_dashboard(request):
     return render(request, 'docteur_dashboard.html')  # Template pour docteur
+
+
+def react_dashboard(request):
+    return render(request, "index.html")
