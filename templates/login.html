@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'Login_v2/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'Login_v2/css/util.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'Login_v2/css/main.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="limiter">
@@ -37,11 +38,18 @@
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn" type="submit">Login</button>
                     </div>
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" type="submit">Login</button>
+                        </div>
+                    </div>
 
                     <div class="text-center p-t-115">
                         <span class="txt1">Don’t have an account?</span>
                         <a class="txt2" href="{% url 'signup_page' %}">Sign Up</a>
                     </div>
+                  
                 </form>
             </div>
         </div>
