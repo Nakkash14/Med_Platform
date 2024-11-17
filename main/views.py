@@ -32,10 +32,10 @@ def login_view(request):
                     return redirect('profile_setup')  # Redirection pour compléter le profil si nécessaire
             except UserProfile.DoesNotExist:
                 messages.error(request, "Profil utilisateur introuvable. Veuillez contacter l'administrateur.")
-                return redirect('login')
+                return redirect('login_page')
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
-            return redirect('login')
+            return redirect('login_page')
     
     return render(request, 'login.html')
 
@@ -119,7 +119,8 @@ def success_view(request):
 
 @login_required
 def patient_dashboard(request):
-    return render(request, 'patient_dashboard.html')  # Template pour patient
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, 'patient_dashboard.html', {'user_profile': user_profile})
 
 @login_required
 def docteur_dashboard(request):
