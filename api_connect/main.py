@@ -24,7 +24,7 @@ def get_snowflake_connection():
         user="PROJETRCW",
         password="Projet2024",
         account="pphdwnf-ro24832",
-        role="SYSADMIN",
+        role="ACCOUNTADMIN",
         warehouse="COMPUTE_WH",
         database="MED_IT_DB",
         schema="PUBLIC"
