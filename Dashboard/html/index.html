@@ -1,7 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="{% static '' %}" data-template="vertical-menu-template-free" data-style="light">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>Dashboard</title>
@@ -28,9 +28,12 @@
     <!-- Helpers -->
     <script src="{% static 'assets/vendor/js/helpers.js' %}"></script>
     <script src="{% static 'assets/js/config.js' %}"></script>
-  </head>
+</head>
 
-  <body>
+<body>
+    <!-- Hidden input to store user ID -->
+    <input type="hidden" id="user-id" value="{{ user.id }}">
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -43,13 +46,8 @@
               </span>
               <span class="app-brand-text demo menu-text fw-bold ms-2">Med It</span>
             </a>
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-              <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
-            </a>
           </div>
-
           <div class="menu-inner-shadow"></div>
-
           <ul class="menu-inner py-1">
             <li class="menu-item active">
               <a href="#" class="menu-link">
@@ -71,21 +69,7 @@
         <div class="layout-page">
           <!-- Navbar -->
           <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
-              <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0);">
-                <i class="bx bx-menu bx-md"></i>
-              </a>
-            </div>
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item d-flex align-items-center">
-                  <i class="bx bx-search bx-md"></i>
-                  <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2" placeholder="Search..." aria-label="Search..." />
-                </div>
-              </div>
-              <!-- /Search -->
-
               <!-- User Dropdown -->
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -104,17 +88,14 @@
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <h6 class="mb-0" id="username">John Doe</h6>
-                            <small class="text-muted">Admin</small>
+                            <h6 class="mb-0" id="user-fullname">John Doe</h6>
+                            <small class="text-muted" id="user-occupation">Occupation</small>
                           </div>
                         </div>
                       </a>
                     </li>
-                    <li><div class="dropdown-divider my-1"></div></li>
                     <li><a class="dropdown-item" href="#"><i class="bx bx-user bx-md me-3"></i>My Profile</a></li>
                     <li><a class="dropdown-item" href="#"><i class="bx bx-cog bx-md me-3"></i>Settings</a></li>
-                    <li><div class="dropdown-divider my-1"></div></li>
-                    <li><a class="dropdown-item" href="#"><i class="bx bx-power-off bx-md me-3"></i>Log Out</a></li>
                   </ul>
                 </li>
               </ul>
@@ -126,34 +107,33 @@
           <!-- Content Wrapper -->
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
-                <!-- Main Content Here -->
-              </div>
+              <h1>Bienvenue, <span id="user-firstname"></span> <span id="user-lastname"></span> !</h1>
+              <p>Email : <span id="user-email"></span></p>
+              <p>Occupation : <span id="user-occupation"></span></p>
             </div>
           </div>
           <!-- /Content Wrapper -->
-
-          <!-- Footer -->
-          <footer class="content-footer footer bg-footer-theme"></footer>
         </div>
-        <!-- /Layout container -->
       </div>
     </div>
     <!-- /Layout wrapper -->
 
     <!-- Core JS -->
     <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
-    <script src="{% static 'assets/vendor/libs/popper/popper.js' %}"></script>
     <script src="{% static 'assets/vendor/js/bootstrap.js' %}"></script>
-    <script src="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
-    <script src="{% static 'assets/vendor/js/menu.js' %}"></script>
-    <script src="{% static 'assets/vendor/libs/apex-charts/apexcharts.js' %}"></script>
-    <script src="{% static 'assets/js/main.js' %}"></script>
 
     <!-- Fetch API Script -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const userId = 1;
+        const userId = document.getElementById("user-id").value;
+
+        // Vérification de l'ID utilisateur
+        if (!userId) {
+            console.error("ID utilisateur manquant !");
+            return;
+        }
+
+        // Récupérer les données utilisateur via API
         fetch(`http://127.0.0.1:8001/api/user-profile/${userId}`)
           .then(response => {
             if (!response.ok) {
@@ -162,11 +142,15 @@
             return response.json();
           })
           .then(profile => {
-            document.getElementById("username").textContent = profile.firstname || "Utilisateur";
+            // Mise à jour du contenu dynamique
+            document.getElementById("user-firstname").textContent = profile.firstname || "Non renseigné";
+            document.getElementById("user-lastname").textContent = profile.lastname || "Non renseigné";
+            document.getElementById("user-fullname").textContent = `${profile.firstname || ''} ${profile.lastname || ''}`;
+            document.getElementById("user-email").textContent = profile.email || "Non renseigné";
+            document.getElementById("user-occupation").textContent = profile.occupation || "Non renseigné";
           })
           .catch(error => {
             console.error("Erreur lors de l'appel à l'API :", error);
-            document.getElementById("username").textContent = "Erreur";
           });
       });
     </script>

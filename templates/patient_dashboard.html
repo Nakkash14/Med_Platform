@@ -16,21 +16,22 @@
     </button>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const userId = document.getElementById('user-id').value;
+        document.addEventListener("DOMContentLoaded", function () {
+            const userId = document.getElementById("user-id").value;
 
             fetch(`http://127.0.0.1:8001/api/user-profile/${userId}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("Erreur lors de la récupération des données");
+                        throw new Error("Erreur lors de la récupération des données utilisateur");
                     }
                     return response.json();
                 })
                 .then(profile => {
-                    document.getElementById('user-firstname').textContent = profile.firstname || "N/A";
-                    document.getElementById('user-lastname').textContent = profile.lastname || "N/A";
-                    document.getElementById('user-email').textContent = profile.email || "N/A";
-                    document.getElementById('user-occupation').textContent = profile.occupation || "N/A";
+                    document.getElementById("user-firstname").textContent = profile.firstname || "N/A";
+                    document.getElementById("user-lastname").textContent = profile.lastname || "N/A";
+                    document.getElementById("user-email").textContent = profile.email || "N/A";
+                    document.getElementById("user-occupation").textContent = profile.occupation || "N/A";
+                    document.getElementById("username").textContent = `${profile.firstname} ${profile.lastname}`;
                 })
                 .catch(error => {
                     console.error("Erreur lors de l'appel à l'API :", error);
