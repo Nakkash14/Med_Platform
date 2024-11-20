@@ -129,3 +129,6 @@ def docteur_dashboard(request):
 
 def dashboard(request):
     return render(request, "index.html")
+
+def dashboard_D(request):
+    return render(request, "index_doctor.html")

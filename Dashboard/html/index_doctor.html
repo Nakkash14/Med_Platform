@@ -1,0 +1,164 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="{% static '' %}" data-template="vertical-menu-template-free" data-style="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Dashboard</title>
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/img/favicon/favicon.ico' %}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/boxicons.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/css/core.css' %}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/css/theme-default.css' %}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{% static 'assets/css/demo.css' %}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/apex-charts/apex-charts.css' %}" />
+
+    <!-- Helpers -->
+    <script src="{% static 'assets/vendor/js/helpers.js' %}"></script>
+    <script src="{% static 'assets/js/config.js' %}"></script>
+</head>
+
+<body>
+    <!-- Hidden input to store user ID -->
+    <input type="hidden" id="user-id" value="{{ user.id }}">
+
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="index.html" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <!-- SVG Logo -->
+              </span>
+              <span class="app-brand-text demo menu-text fw-bold ms-2">Med It</span>
+            </a>
+          </div>
+          <div class="menu-inner-shadow"></div>
+          <ul class="menu-inner py-1">
+            <li class="menu-item active">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-smile"></i>
+                <div>Dashboard</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-file"></i>
+                <div>Reports</div>
+              </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-file"></i>
+                  <div>Chatbot</div>
+                </a>
+              </li>
+          </ul>
+        </aside>
+        <!-- /Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+          <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme">
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <!-- User Dropdown -->
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="{% static 'assets/img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="{% static 'assets/img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle" />
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <h6 class="mb-0" id="user-fullname">John Doe</h6>
+                            <small class="text-muted" id="user-occupation">Occupation</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li><a class="dropdown-item" href="#"><i class="bx bx-user bx-md me-3"></i>My Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bx bx-cog bx-md me-3"></i>Settings</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <!-- /User Dropdown -->
+            </div>
+          </nav>
+          <!-- /Navbar -->
+
+          <!-- Content Wrapper -->
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h1>Bienvenue, <span id="user-firstname"></span> <span id="user-lastname"></span> !</h1>
+              <p>Email : <span id="user-email"></span></p>
+              <p>Occupation : <span id="user-occupation"></span></p>
+            </div>
+          </div>
+          <!-- /Content Wrapper -->
+        </div>
+      </div>
+    </div>
+    <!-- /Layout wrapper -->
+
+    <!-- Core JS -->
+    <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+    <script src="{% static 'assets/vendor/js/bootstrap.js' %}"></script>
+
+    <!-- Fetch API Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const userId = document.getElementById("user-id").value;
+
+        // Vérification de l'ID utilisateur
+        if (!userId) {
+            console.error("ID utilisateur manquant !");
+            return;
+        }
+
+        // Récupérer les données utilisateur via API
+        fetch(`http://127.0.0.1:8001/api/user-profile/${userId}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Erreur lors de la récupération des données utilisateur");
+            }
+            return response.json();
+          })
+          .then(profile => {
+            // Mise à jour du contenu dynamique
+            document.getElementById("user-firstname").textContent = profile.firstname || "Non renseigné";
+            document.getElementById("user-lastname").textContent = profile.lastname || "Non renseigné";
+            document.getElementById("user-fullname").textContent = `${profile.firstname || ''} ${profile.lastname || ''}`;
+            document.getElementById("user-email").textContent = profile.email || "Non renseigné";
+            document.getElementById("user-occupation").textContent = profile.occupation || "Non renseigné";
+          })
+          .catch(error => {
+            console.error("Erreur lors de l'appel à l'API :", error);
+          });
+      });
+    </script>
+  </body>
+</html>
