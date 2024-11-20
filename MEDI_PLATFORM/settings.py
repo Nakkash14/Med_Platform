@@ -40,7 +40,7 @@ ROOT_URLCONF = 'MEDI_PLATFORM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates", BASE_DIR / "dashboard_react" / "build"],
+        'DIRS': [BASE_DIR / "templates", BASE_DIR / "Dashboard" / "html"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,7 +102,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    BASE_DIR / "dashboard_react" / "build" / "static",  # React build static files
+    BASE_DIR / "Dashboard" / "Static" , 
 ]
 
 # Default primary key field type

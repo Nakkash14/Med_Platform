@@ -10,5 +10,5 @@ urlpatterns = [
     path('success/', views.success_view, name='succes_page'),
     path('dashboard/patient/', views.patient_dashboard, name='patient_dashboard'),
     path('dashboard/docteur/', views.docteur_dashboard, name='docteur_dashboard'),
-    path('dashboard/', views.react_dashboard, name='react_dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]

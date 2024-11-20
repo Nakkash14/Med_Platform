@@ -76,8 +76,7 @@ def get_user_profile(user_id: int):
     try:
         conn = get_snowflake_connection()
         cursor = conn.cursor()
-
-        # Requête mise à jour avec la bonne correspondance de colonnes
+        
         query = """
         SELECT firstname, lastname, age, dob, gender, email, address, occupation, licence, speciality
         FROM MAIN_USERPROFILE
@@ -85,16 +84,13 @@ def get_user_profile(user_id: int):
         """
         cursor.execute(query, (user_id,))
         result = cursor.fetchone()
-        
+        logging.debug(f"Résultat SQL pour {user_id}: {result}")
+
         if result:
             keys = ['firstname', 'lastname', 'age', 'dob', 'gender', 'email', 'address', 'occupation', 'licence', 'speciality']
-            profile = dict(zip(keys, result))
-            return profile
+            return dict(zip(keys, result))
         else:
             raise HTTPException(status_code=404, detail=f"No profile found for user_id {user_id}")
-    except snowflake.connector.errors.ProgrammingError as pe:
-        logging.error(f"Erreur SQL : {pe}")
-        raise HTTPException(status_code=500, detail=f"Erreur SQL : {str(pe)}")
     except Exception as e:
         logging.error(f"Erreur interne : {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
