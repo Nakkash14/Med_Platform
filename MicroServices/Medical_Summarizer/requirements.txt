@@ -1,0 +1,5 @@
+
+Flask
+PyMuPDF
+langchain-ollama
+langchain-core

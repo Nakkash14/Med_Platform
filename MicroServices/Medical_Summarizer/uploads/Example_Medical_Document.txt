@@ -1,0 +1,39 @@
+
+Titre : Rapport Médical
+
+Patient :
+- Nom : Jean Dupont
+- Âge : 45 ans
+- Sexe : Masculin
+
+Diagnostic Principal :
+Hypertension artérielle.
+
+Antécédents Médicaux :
+- Diabète de type 2 (diagnostiqué en 2015).
+- Cholestérol élevé (diagnostiqué en 2018).
+
+Symptômes Actuels :
+- Maux de tête fréquents.
+- Étourdissements.
+- Fatigue.
+
+Examen Physique :
+- Tension artérielle : 160/100 mmHg.
+- IMC : 28 (surpoids).
+
+Examens Complémentaires :
+- Bilan sanguin : Glycémie à jeun : 7,8 mmol/L ; Cholestérol LDL : 3,9 mmol/L.
+- ECG : Anomalie légère détectée (hypertrophie ventriculaire gauche).
+
+Traitement Proposé :
+- Médicaments :
+  - Amlodipine 5 mg/jour (antihypertenseur).
+  - Metformine 850 mg matin et soir (contrôle du diabète).
+- Conseils hygiéno-diététiques :
+  - Réduction du sel dans l’alimentation.
+  - Activité physique régulière : marche rapide 30 min/jour.
+
+Plan de Suivi :
+- Contrôle de la tension artérielle dans 1 mois.
+- Réalisation d’une échographie cardiaque dans 3 mois.
